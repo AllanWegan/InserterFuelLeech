@@ -1,0 +1,10 @@
+{
+  "name": "BurnerLeech",
+  "version": "0.1.7",
+  "title": "BurnerLeech",
+  "author": "Klonan",
+  "contact": "",
+  "homepage": "",
+  "description": "Burner Inserters can take fuel from any entity (ie. furnaces)",
+  "factorio_version": "0.14"
+}
