@@ -9,6 +9,7 @@ function cust_log(msg, data)
   if type(msg) ~= "string" then
     msg = serpent.line(msg)
   end
+  msg = tostring(game.tick) .. " " .. script.mod_name .. ": " .. msg
   if data then
     if type(data) == "table" then
       local sep = " "
@@ -39,6 +40,11 @@ function on_any_build(event)
     local inserters_count = get_table_u(global, "inserters_count", 0)
     table.insert(inserters_a, inserter)
     global.inserters_count = inserters_count + 1
+    --[[cust_log("Added inserter.", {
+      inserter = inserter,
+      name = inserter.name,
+      position = inserter.position,
+    })--]]
   end
 end
 
@@ -61,8 +67,8 @@ function process_inserters()
       table.insert(inserters_b, inserter)
       process_inserter(inserter)
     else
-      cust_log("Removed an inserter.")
       inserters_count = inserters_count - 1
+      --cust_log("Removed inserter.", {inserter=inserter})
     end
     i = i + 1
   end
@@ -77,11 +83,11 @@ function process_inserter(inserter)
   end
 
   -- Only change behaviour for grabbing from another entity:
-  local source = inserter.pickup_target
+  local source = pickup_target_of_inserter(inserter)
   if not source or not source.burner then
     return
   end
-
+  
   -- Teleport-leech a fuel item if cheat enabled and way too low on fuel:
   if inserter_self_refuel_cheat(inserter, source) then
     return
@@ -108,7 +114,6 @@ function inserter_self_refuel_cheat(inserter, source)
   if settingsCache.self_refuel_cheat_enabled
   and burner and burner.inventory.is_empty()
   and burner.remaining_burning_fuel <= settingsCache.self_refuel_cheat_fuel then
-    print("cheat-refueling @", burner.remaining_burning_fuel)
     local source_fuel = source.burner.inventory
     
     -- Find first stack of grabable fuel usable by our burner:
@@ -124,7 +129,11 @@ function inserter_self_refuel_cheat(inserter, source)
     if stack_def.count == 0 then
       return true
     end
-    print("cheat-refueling items:", stack_def.count)
+    --[[cust_log("cheat-refuelled", {
+      inserter = inserter,
+      position = inserter.position,
+      remaining_fuel = burner.remaining_burning_fuel,
+    })--]]
     burner.inventory.insert(stack_def)
     
     return true
@@ -242,6 +251,20 @@ function is_item_of_fuel_cats(name, fuel_cats)
     return fuel_cats[fuel_cat] == true
   end
   return false
+end
+
+function pickup_target_of_inserter(inserter)
+  local entity = inserter.pickup_target
+  if not entity then
+    -- Inserters only know a pickup target if the entity at pickup_position has
+    -- a regular inventory.
+    local entities = inserter.surface.find_entities_filtered{
+      position=inserter.pickup_position}
+    if # entities ~= 0 then
+      entity = entities[1]
+    end
+  end
+  return entity
 end
 
 function stack_size_of_inserter(inserter)
