@@ -1,10 +1,11 @@
 {
-  "name": "BurnerLeech",
-  "version": "0.1.7",
-  "title": "BurnerLeech",
-  "author": "Klonan",
-  "contact": "",
+  "name": "InserterFuelLeech",
+  "title": "Inserter Fuel Leech",
+  "author": "Klonan, Allan Wegan alias Oktokolo",
+  "contact": "allanwegan@allanwegan.de",
   "homepage": "",
-  "description": "Burner Inserters can take fuel from any entity (ie. furnaces)",
-  "factorio_version": "0.14"
+  "description": "In addition to normal behaviour, all Inserters take fuel from entities containing a burner when they or their drop target have no fuel left.",
+  "factorio_version": "0.16",
+  "license": "GNU GPL-3.0",
+  "version": "0.2.0"
 }

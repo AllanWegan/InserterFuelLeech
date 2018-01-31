@@ -1,0 +1,43 @@
+InserterFuelLeech is a mod for Factorio.
+
+It makes all inserters take ("leech") fuel from the fuel inventories of entities at their pickup position. They do that whenever their hand is hovering over the pickup location and they or heir drop target need refuelling.
+
+This module is a fork of Klonan's BurnerLeech (to be found at <https://mods.factorio.com/mod/BurnerLeech>) released under the GNU GPLv3.0.
+Therefore it is itself licensed under the same license. The file COPYING contains a copy of the GNU GPLv3.0.
+
+
+Deviations from BurnerLeech:
+
+- All inserters with type = "inserter" exhibit the fuel leech behaviour.
+
+- Only fuel matching the accepted fuel catagories of the target fuel inventory is leeched.
+
+- Leeches from the first suitable stack of fuel first regardless of burner inventory size.
+
+- Inserters transfer as much fuel as they can in one go. They honor (stack) inserter capacity bonuses and user-set limits on stack size.
+
+- Inserters leech from other fuel inventories if their fuel inventory is empty or the fuel inventory of the drop target contains less than 5 items (5 also is the vanilla count of fuel items, that are put in burners by default when fuelling from a belt).
+
+- Inserters only leech fuel into their hand while it hovers over the pickup location.
+
+- Burner / electric inserters don't leech while completely out of energy.
+
+- Inserters honor filters (you can limit the types of fuel that may be leeched by using an inserter, that supports filters - even a modded burner-tech one).
+
+
+Known issues:
+
+- Inserters don't leech for themselves if their fuel inventory is not empty. Tried making them grabbing more fuel, but they refused to keep it for themselves.
+Because of that, burner inserters only leech fuel for themselves if their burner inventory is empty (but they do grab a stack as big as possible, so capacity upgrades still have an effect on the refuelling frequency).
+
+- Burner inserters fuelled by leeching only, might forget to refuel themselves when they are kept busy. The cause is, that the leech logic, for performance reasons, only runs every "Maximum ticks between updates" ticks for each inserter and, to avoid visible teleporting opf items, it leeches only if its hand is empty and hovers over the pickup position.
+The work around teleports single fuel items from pickup target's burner inventories to burner inserter's burner inventory if empty and less than a set amount of joules of energy left. I consider that cheating and tweaked the default settings so that it is triggered as rarely, as possible while not hurting performance too much. The cheat can be disabled via unticking "Use self-refuelling cheat". It can be tuned by setting "Self-refuelling cheat fuel".
+
+- Inserters don't leech from locomotives for unknown reasons.
+
+- Inserters don't leech from burner inserters for unknown reasons.
+
+
+History:
+
+- Version 0.2.0 is the first version of the fork and compatible to Factorio 0.16
