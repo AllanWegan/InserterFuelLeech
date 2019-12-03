@@ -117,8 +117,8 @@ function inserter_self_refuel_cheat(inserter, source)
     local source_fuel = source.burner.inventory
     
     -- Find first stack of grabable fuel usable by our burner:
-    local source_stack = first_movable_stack_of_inventory_by_fuel_cats(
-      source_fuel, inserter, burner.fuel_categories)
+    local source_stack = first_movable_stack_of_inventory(
+      source_fuel, inserter, burner.inventory)
     if not source_stack then
       return true
     end
@@ -166,11 +166,19 @@ function inserter_leech_fuel(inserter, source_burner, dest_burner, min_count)
   
   -- Find first stack of grabable fuel usable by destination burner:
   local fuel_cats = dest_burner.fuel_categories
-  local source_stack = first_movable_stack_of_inventory_by_fuel_cats(
-    source_fuel, inserter, fuel_cats)
+  local source_stack = first_movable_stack_of_inventory(
+    source_fuel, inserter, dest_fuel)
   if not source_stack then
     return false
   end
+  
+  -- If there is not room in the destination invintory do not try to insert
+	--[[
+  if not dest_fuel.can_insert(source_stack) then
+	  --log('Could not insert because stack will not fit in destination')
+	  return false
+  end
+  --]]
   
   -- Grab as much of the fuel as possible:
   local name, count = source_stack.name, stack_size_of_inserter(inserter)
@@ -203,35 +211,52 @@ function needs_refuelling(fuel_inv, min_count)
   return true
 end
 
-function first_movable_stack_of_inventory_by_fuel_cats(inventory, mover
+--[[
+function first_movable_stack_of_inventory(source_inventory, mover
 , fuel_cats)
-  return first_stack_of_inventory_by_guard(inventory, function(stack)
-    return is_movable_stack_of_fuel(stack, mover, fuel_cats)
-  end)
-end
-
-function is_movable_stack_of_fuel(stack, mover, fuel_cats)
-  local name = stack.name
-  return (not mover or is_item_allowed_by_mover_filter(mover, name))
-  and (not fuel_cats or is_item_of_fuel_cats(name, fuel_cats))
-end
-
-function first_stack_of_inventory_by_guard(inventory, guard_fun)
-  if not inventory then
+  if not source_inventory then
     return nil
   end
-  for i = 1, # inventory, 1 do
-    local stack = inventory[i]
-    if stack and stack.valid_for_read and stack.count ~= 0
-    and guard_fun(stack) then
+  for i = 1, # source_inventory, 1 do
+    local stack = source_inventory[i]
+    if stack and stack.valid_for_read and stack.count ~= 0   -- Is this stack good
+    and is_movable_stack_of_fuel(stack, mover, fuel_cats) then
+      return stack
+    end
+  end
+  return nil
+end
+--]]
+
+function first_movable_stack_of_inventory(source_inventory, mover
+, dest_inventory)
+  if not source_inventory or not dest_inventory or not mover then
+    return nil
+  end
+  for i = 1, # source_inventory, 1 do
+    local stack = source_inventory[i]
+	
+    if stack and stack.valid_for_read and stack.count ~= 0   -- Is this stack good
+    and is_item_allowed_by_mover_filter(mover, stack) 	-- Can this stack be moved by a filter inseter
+	and dest_inventory.can_insert(stack) then 			-- will this stack fit in the destination inventory 
+														-- (automaticly cheacks fuel catogorys)
       return stack
     end
   end
   return nil
 end
 
-function is_item_allowed_by_mover_filter(item_mover, item_name)
+--[[
+function is_movable_stack_of_fuel(stack, mover, fuel_cats)
+  --local name = stack.name
+  return (not mover or is_item_allowed_by_mover_filter(mover, stack))
+  and (not fuel_cats or is_item_of_fuel_cats(name, fuel_cats))
+end
+--]]
+
+function is_item_allowed_by_mover_filter(item_mover, stack)
   local is_filtered = false
+  local item_name = stack.name
   for i = 1, item_mover.filter_slot_count, 1 do
     local filter_name = item_mover.get_filter(i)
     if filter_name then
@@ -244,6 +269,7 @@ function is_item_allowed_by_mover_filter(item_mover, item_name)
   return not is_filtered
 end
 
+--[[
 function is_item_of_fuel_cats(name, fuel_cats)
   local proto = game.item_prototypes[name]
   local fuel_cat = proto and proto.fuel_category
@@ -252,6 +278,7 @@ function is_item_of_fuel_cats(name, fuel_cats)
   end
   return false
 end
+--]]
 
 function pickup_target_of_inserter(inserter)
   local entity = inserter.pickup_target
