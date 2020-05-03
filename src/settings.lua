@@ -1,6 +1,6 @@
 --[[
-This file is part of the mod inserter-fuel-leech that is licensed under the
-GNU GPL-3.0. See the file COPYING for a copy of the GNU GPLv3.0.
+This file is part of the mod inserter-fuel-leech that is licensed under
+the GNU GPL-3.0. See the file COPYING for a copy of the GNU GPLv3.0.
 ]]
 data:extend({
     {
@@ -36,14 +36,5 @@ data:extend({
         order = "80",
         setting_type = "runtime-global",
         default_value = true,
-    },
-    {
-        name = "inserter-fuel-leech-self-refuel-cheat-fuel",
-        type = "int-setting",
-        order = "81",
-        setting_type = "runtime-global",
-        minimum_value = 1,
-        maximum_value = 1000000000,
-        default_value = 1000000,
     },
 })

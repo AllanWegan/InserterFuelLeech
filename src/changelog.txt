@@ -1,0 +1,31 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: 2018-01-31
+  Info:
+    - First version of the fork.
+    - Compatible with Factorio 0.16.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.1
+Date: 2018-01-31
+  Features:
+    - Inserters now leech fuel from all entities containing a burner (including locomotives and burner inserters).
+---------------------------------------------------------------------------------------------------
+Version: 0.2.2
+Date: 2019-03-15
+  Info:
+    - Version bump for Factorio 0.17.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.3
+Date: 2020-02-10
+  Bugfixes:
+    - Fixed that inserters might grab fuel for wich their target has no room because all slots contain other fuel items.
+  Features:
+    - Self refuel cheat if enabled (the default), now once in a while fuels unpowered burner inserters with a minuscule amount of free fuel. This fully removes the need to manually feed burner inserters ever again. They slowly fix themselves. The out-of-power-icon keeps flashing until the inserter has itself properly fueled again.
+  Info:
+    - Version bump for Factorio 0.18.
+    - Non-cheating self-fueling code replaced with new allow_burner_leech property on burner inserter prototypes to improve performance and reliability.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.4
+Date: 2020-02-28
+  Bugfixes:
+    - Fixed missing call to initSettingsCache() in on_configuration_changed.
