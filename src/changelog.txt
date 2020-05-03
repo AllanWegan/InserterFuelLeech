@@ -29,3 +29,10 @@ Version: 0.2.4
 Date: 2020-02-28
   Bugfixes:
     - Fixed missing call to initSettingsCache() in on_configuration_changed.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.5
+Date: 2020-05-03
+  Bugfixes:
+    - Fixed fuel cheat trying to feed inserters items in their fuel category wich have a fuel value of 0. If you defined such an item, please fix your mod too. Items having a fuel category should also have a positive fuel value.
+  Info:
+    - Synced README with mod portal.

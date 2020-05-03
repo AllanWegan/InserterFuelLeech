@@ -1,37 +1,20 @@
 InserterFuelLeech is a mod for Factorio.
 
-It makes all inserters take ("leech") fuel from the fuel inventories of entities at their pickup position. They do that whenever their hand is hovering over the pickup location and they or heir drop target need refuelling.
+Makes all inserters take ("leech") fuel from the fuel inventories of entities at their pickup position. They do that whenever their hand is hovering over the pickup location and they or their drop target need refuelling.
 
-This module is a fork of Klonan's BurnerLeech (to be found at <https://mods.factorio.com/mod/BurnerLeech>) released under the GNU GPLv3.0.
-Therefore it is itself licensed under the same license. The file COPYING contains a copy of the GNU GPLv3.0.
+This mod is a fork of Klonan's BurnerLeech (<https://mods.factorio.com/mod/BurnerLeech>).
 
-
-Deviations from BurnerLeech:
-
+Deviations from BurnerLeech
 - All inserters with type = "inserter" exhibit the fuel leech behaviour.
-
-- Only fuel matching the accepted fuel catagories of the target fuel inventory is leeched.
-
+- Only fuel accepted by the target fuel inventory is leeched.
 - Leeches from the first suitable stack of fuel first regardless of burner inventory size.
-
-- Inserters transfer as much fuel as they can in one go. They honor (stack) inserter capacity bonuses and user-set limits on stack size.
-
-- Inserters leech from other fuel inventories if their fuel inventory is empty or the fuel inventory of the drop target contains less than 5 items (5 also is the vanilla count of fuel items, that are put in burners by default when fuelling from a belt).
-
+- Inserters transfer as much fuel as they can in one go. They honor (stack) inserter capacity bonuses and
+ user-set limits on stack size.
+- Inserters leech from other fuel inventories if their fuel inventory is empty or the fuel inventory of the drop target
+ contains less than 5 items (5 also is the vanilla count of fuel items, that are put in burners by default when
+ fuelling from a belt).
 - Inserters only leech fuel into their hand while it hovers over the pickup location.
-
-- Burner / electric inserters don't leech while completely out of energy.
-
-- Inserters honor filters (you can limit the types of fuel that may be leeched by using an inserter, that supports filters - even a modded burner-tech one).
-
-
-Known issues:
-
-Inserters don't leech for themselves if their fuel inventory is not empty. Tried making them grabbing more fuel, but they refused to keep it for themselves. Because of that, burner inserters only leech fuel for themselves if their burner inventory is empty (but they do grab a stack as big as possible, so capacity upgrades still have an effect on the refuelling frequency).
-Hard to fix without eating performance without proper API support (something like teleporting held fuel into own fuel inventory when hand is hovering over the inserter).
-Won't fix for now.
-
-Burner inserters, fuelled by leeching only, might forget to refuel themselves when they are kept busy. The cause is, that the leech logic, for performance reasons, only runs every "Maximum ticks between updates" ticks for each inserter while it leeches only if its hand is empty and hovers over the pickup position (to avoid visibly teleporting items).
-The current work around teleports single fuel items from the pickup target's fuel inventory to the burner inserter's fuel inventory if the latter is empty and the inserter's burner has less than a set amount of joules of energy left. That obviously is cheating. So the default settings are tweaked to be a compromise between triggering this behaviour as rarely as possible while not eating too much performance because of checking too much inserters per tick. The cheat can be disabled via unticking "Use self-refuelling cheat". It can be tuned by setting "Self-refuelling cheat fuel". You might experience burner inserters running dry if changing that settings.
-Might be fixable in a performance-friendly way by decreasing the time between checks after implementing seperate lists for inserters that need to be checked (need fuel or have a drop target that needs fuel) and inserters that do not, but might get a drop target needing refuelling in the future. The latter ones need not be checked at all until something is built or parked at their drop position.
-Might get fixed in next version.
+- Electric inserters don't leech while completely out of energy.
+- If the "cheat" is enabled (the default), Burner inserters wich ran out of fuel get a minuscule amount of energy out of thin air once in a while to allow them to slowly grab themselves some fuel.
+- Inserters honor filters (you can limit the types of fuel that may be leeched by using an inserter, that supports
+ filters - even a modded burner-tech one).

@@ -103,7 +103,8 @@ function inserter_cheat_fuel(inserter)
     local burner = inserter.burner
     for fuel_cat, v in pairs(burner.fuel_categories) do
         for k, proto in pairs(game.get_filtered_item_prototypes({
-            {filter = "fuel-category", ["fuel-category"] = fuel_cat}
+            {filter = "fuel-category", ["fuel-category"] = fuel_cat},
+            {mode = "and", filter = "fuel-value", comparison = ">", value = 0.0}
         })) do
             burner.currently_burning = proto.name
             burner.remaining_burning_fuel = 5000

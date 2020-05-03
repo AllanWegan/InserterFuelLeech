@@ -8,5 +8,5 @@
   "factorio_version": "0.18",
   "dependencies": ["base >= 0.18.7"],
   "license": "GNU GPL-3.0",
-  "version": "0.2.4"
+  "version": "0.2.5"
 }
