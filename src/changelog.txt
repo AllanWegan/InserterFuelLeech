@@ -36,3 +36,8 @@ Date: 2020-05-03
     - Fixed fuel cheat trying to feed inserters items in their fuel category wich have a fuel value of 0. If you defined such an item, please fix your mod too. Items having a fuel category should also have a positive fuel value.
   Info:
     - Synced README with mod portal.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.6
+Date: 2020-12-14
+  Info:
+    - Version bump for Factorio 1.1.
