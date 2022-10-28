@@ -41,3 +41,8 @@ Version: 0.2.6
 Date: 2020-12-14
   Info:
     - Version bump for Factorio 1.1.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.7
+Date: 2022-10-28
+  Bugfixes:
+    - Fixed scripted entity ghost revive, entity build or entity clone not detected by listening to (hopefully) all the various events regarding entity creation (including script_raised_revive used by "Nanobots: Early Bots").

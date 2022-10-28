@@ -32,10 +32,9 @@ function cust_log(msg, data)
     print(msg)
 end
 
-function on_any_build(event)
-    local inserter = event.created_entity
-    if inserter.type == "inserter" then
-        table.insert(global.inserters_a, inserter)
+function register_entity(entity)
+    if entity and entity.valid and entity.type == "inserter" then
+        table.insert(global.inserters_a, entity)
         global.inserters_count = global.inserters_count + 1
         --[[cust_log("Added inserter.", {
         inserter = inserter,
@@ -258,5 +257,19 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function(data)
 end)
 
 script.on_event(defines.events.on_tick, process_inserters)
-script.on_event(defines.events.on_built_entity, on_any_build)
-script.on_event(defines.events.on_robot_built_entity, on_any_build)
+
+script.on_event(defines.events.on_built_entity, function(event)
+    register_entity(event.created_entity)
+end)
+script.on_event(defines.events.on_robot_built_entity, function(event)
+    register_entity(event.created_entity)
+end)
+script.on_event(defines.events.script_raised_built, function(event)
+    register_entity(event.entity)
+end)
+script.on_event(defines.events.script_raised_revive, function(event)
+    register_entity(event.entity)
+end)
+script.on_event(defines.events.on_entity_cloned, function(event)
+    register_entity(event.destination)
+end)
