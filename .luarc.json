@@ -1,0 +1,11 @@
+{
+    "diagnostics.disable": [
+        "lowercase-global",
+        "trailing-space"
+    ],
+    "workspace.library": [
+        "tools/Factorio types"
+    ],
+    "workspace.preloadFileSize": 100000,
+    "workspace.maxPreload": 10000
+}

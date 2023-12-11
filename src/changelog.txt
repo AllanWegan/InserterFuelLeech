@@ -46,3 +46,22 @@ Version: 0.2.7
 Date: 2022-10-28
   Bugfixes:
     - Fixed scripted entity ghost revive, entity build or entity clone not detected by listening to (hopefully) all the various events regarding entity creation (including script_raised_revive used by "Nanobots: Early Bots").
+---------------------------------------------------------------------------------------------------
+Version: 0.3.0
+Date: 2024-12-02
+  Info:
+    - Full rewrite from the ground up for less UPS impact and more robustness.
+    - Fully Space Age quality aware (but doesn't require Space Age).
+    - Uses inserter_target_pickup_count introduced in Factorio version 1.1.75.
+    - More accurate prediction of when the inserter hand is over the pickup target again.
+      Inserters less often pick up other stuff when they actually need to refuel themselves or their drop target.
+    - Optional eventual inserter discovery loop.
+      When enabled, inserters built by other mods without raising the appropriate events are detected eventually.
+    - Chat command /iflreset to reset the mod state and rediscover all inserters immediately.
+    - Chat command /iflstats to print some statistics about the known inserters.
+    - The refuel cheat doesn't create power from thin air anymore.\n
+      First, the inserter's held items are checked.\n
+      Then an item is searched at the pickup location (burner inventory, normal inventory, belt lane or tile).\n
+      And last, an item is searched at the drop location (burner inventory, normal inventory, belt lane or tile).\n
+      If an item is found, it is teleported into the inserter burner inventory.\n
+    - Inserters also leech fuel for themselves from drop target if pickup target isn't an entity with a fuel inventory.\n
