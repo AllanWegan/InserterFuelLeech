@@ -5,7 +5,5 @@ GNU GPL-3.0. See the file COPYING for a copy of the GNU GPLv3.0.
 
 -- Enable new leeching-mechanic for self-fueling of burner inserters:
 for name, proto in pairs(data.raw["inserter"]) do
-    if proto.energy_source.type == "burner" then
-        proto.allow_burner_leech = true
-    end
+    proto.allow_burner_leech = true
 end
