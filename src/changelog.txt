@@ -64,3 +64,8 @@ Date: 2025-01-19
       This is unreliable for now, but still good enough for low traffic with cheat refueling enabled.\n
     - Admin chat command /iflreset to reset the mod state and rediscover all inserters immediately.
     - Chat command /iflstats to print some statistics about the known inserters.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: 2025-02-01
+  Bugfixes:
+    - Fixed ring buffer length calculation (was larger than needed).

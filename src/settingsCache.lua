@@ -87,7 +87,7 @@ function updateSettingsCache()
     local missingResourceTicksToWait = math.floor(60 * settings.global["inserter-fuel-leech-missing-resource-seconds-to-wait"].value)
     local ticksBetweenUpdatesVariation = math.floor(60 * settings.global["inserter-fuel-leech-wait-variation-seconds"].value)
     local minTicksToWaitforVariation = math.min(noUseForFuelTicksToWait, missingPowerTicksToWait, missingResourceTicksToWait)
-    local maxTicksToWait = minTicksToWaitforVariation + math.max(noUseForFuelTicksToWait, missingPowerTicksToWait, missingResourceTicksToWait)
+    local maxTicksToWait = math.max(noUseForFuelTicksToWait, missingPowerTicksToWait, missingResourceTicksToWait) + ticksBetweenUpdatesVariation
     settingsCache.noUseForFuelTicksToWait = noUseForFuelTicksToWait
     settingsCache.unpoweredNonBurnerTicksToWait = missingPowerTicksToWait
     settingsCache.unpoweredBurnerTicksToWait = missingResourceTicksToWait
