@@ -79,6 +79,15 @@ data:extend({
         maximum_value = 1000000,
         default_value = 1,
     },
+    {
+        name = "inserter-fuel-leech-discover-empty-chunks-per-tick",
+        type = "int-setting",
+        order = "051",
+        setting_type = "runtime-global",
+        minimum_value = 1,
+        maximum_value = 1000000,
+        default_value = 10,
+    },
 
     {
         name = "inserter-fuel-leech-chat-log-color",

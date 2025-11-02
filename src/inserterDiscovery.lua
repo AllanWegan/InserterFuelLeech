@@ -8,13 +8,17 @@ Inserter (re-)discovery to eventually rediscover inserters which didn't need
 management before but do now or have been discarded or missed by the event handlers.
 ]]
 
-local InserterDiscoveryStateVersion = 326
+local InserterDiscoveryStateVersion = 327
 
 --- @class InserterDiscoveryState
 --- @field version uint
+--- @field cycleStartTick uint?
 --- @field surfaces LuaSurface[]
 --- @field surfaceIndex uint
 --- @field cycleSurfacesCount uint
+--- @field chunks LuaChunkIterator?
+--- @field chunksSurface LuaSurface?
+--- @field cycleChunksCount uint
 --- @field inserters LuaEntity[]
 --- @field inserterIndex uint
 --- @field cycleInsertersCount uint
@@ -24,9 +28,13 @@ local InserterDiscoveryStateVersion = 326
 local function makeInserterDiscoveryState()
     return {
         version = InserterDiscoveryStateVersion,
+        cycleStartTick = nil,
         surfaces = {},
         surfaceIndex = 0,
         cycleSurfacesCount = 0,
+        chunks = nil,
+        chunksSurface = nil,
+        cycleChunksCount = 0,
         inserters = {},
         inserterIndex = 0,
         cycleInsertersCount = 0,
@@ -73,7 +81,7 @@ function discoverUnknownInserters(tick)
     local insertersCount = state.cycleInsertersCount
     local newInsertersCount = state.cycleNewInsertersCount
 
-    -- inserters:
+    -- Process inserters:
     if inserterIndex > 0 then
         for _ = 1, discoverPerTick do
             if inserterIndex > 0 then
@@ -93,7 +101,39 @@ function discoverUnknownInserters(tick)
         return
     end
 
-    -- surface:
+    -- Find next chunk with inserters:
+    local chunks = state.chunks
+    local chunksSurface = state.chunksSurface
+    local chunksCount = state.cycleChunksCount
+    if chunksSurface and chunksSurface.valid and chunks and chunks.valid then
+        local maxEmptyToCheck = settingsCache.discoverEmptyChunksPerTick
+        local emptyDiscovered = 0
+        for chunk in chunks do
+            if not chunk then
+                break
+            end
+            chunksCount = chunksCount + 1
+            if chunksSurface.is_chunk_generated(chunk) then
+                inserters = chunksSurface.find_entities_filtered { area = chunk.area, type = "inserter" }
+                inserterIndex = #inserters
+                if inserterIndex == 0 then
+                    emptyDiscovered = emptyDiscovered + 1
+                    if emptyDiscovered >= maxEmptyToCheck then
+                        state.cycleChunksCount = chunksCount
+                        return
+                    end
+                else
+                    state.inserters = inserters
+                    state.inserterIndex = inserterIndex
+                    state.cycleChunksCount = chunksCount
+                    return
+                end
+            end
+        end
+        state.cycleChunksCount = chunksCount
+    end
+
+    -- Next surface:
     local surfaces = state.surfaces
     local surfaceIndex = state.surfaceIndex
     local surfacesCount = state.cycleSurfacesCount
@@ -101,19 +141,16 @@ function discoverUnknownInserters(tick)
         local surface = surfaces[surfaceIndex]
         if surface and surface.valid then
             surfacesCount = surfacesCount + 1
-            inserters = surface.find_entities_filtered{type = "inserter"}
-            inserterIndex = #inserters
-            state.inserters = inserters
-            state.inserterIndex = inserterIndex
+            state.chunks = surface.get_chunks()
+            state.chunksSurface = surface
         end
-        surfaceIndex = surfaceIndex - 1
-        state.surfaceIndex = surfaceIndex
+        state.surfaceIndex = surfaceIndex - 1
         state.cycleSurfacesCount = surfacesCount
         return
     end
 
     -- New cycle:
-    if insertersCount ~= 0 then
+    if state.cycleStartTick ~= nil then
         local logPlayers = settingsCache.logDiscoveryCyclePlayers
         logMsg(logPlayers, false, table.concat({
             "Inserter discovery cycle complete. Found ",
@@ -121,8 +158,12 @@ function discoverUnknownInserters(tick)
             " inserters (",
             newInsertersCount,
             " new) on ",
+            chunksCount,
+            " chunks on ",
             surfacesCount,
-            " surfaces.",
+            " surfaces in ",
+            formatTickForLog(tick - state.cycleStartTick),
+            ".",
         }), nil)
     end
     surfaces = {}
@@ -131,9 +172,13 @@ function discoverUnknownInserters(tick)
         surfaceIndex = surfaceIndex + 1
         surfaces[surfaceIndex] = surface
     end
+    state.cycleStartTick = tick
     state.surfaces = surfaces
     state.surfaceIndex = surfaceIndex
     state.cycleSurfacesCount = 0
+    state.chunks = nil
+    state.chunksSurface = nil
+    state.cycleChunksCount = 0
     state.inserters = {}
     state.inserterIndex = 0
     state.cycleInsertersCount = 0

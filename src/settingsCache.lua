@@ -11,6 +11,7 @@ GNU GPL-3.0. See the file COPYING for a copy of the GNU GPLv3.0.
 ---
 --- @field inserterTypes table<string?,boolean?>
 --- @field discoverPerTick uint
+--- @field discoverEmptyChunksPerTick uint
 ---
 --- @field selfLeechFromDropEnabled boolean
 --- @field selfRefuelCheatEnabled boolean
@@ -35,6 +36,7 @@ GNU GPL-3.0. See the file COPYING for a copy of the GNU GPLv3.0.
 settingsCache = {
     inserterTypes = {},
     discoverPerTick = 1,
+    discoverEmptyChunksPerTick = 1,
 
     selfLeechFromDropEnabled = false,
     selfRefuelCheatEnabled = false,
@@ -77,6 +79,7 @@ function updateSettingsCache()
         settingsCache.inserterTypes = {}
     end
     settingsCache.discoverPerTick = settings.global["inserter-fuel-leech-discover-per-tick"].value
+    settingsCache.discoverEmptyChunksPerTick = settings.global["inserter-fuel-leech-discover-empty-chunks-per-tick"].value
 
     settingsCache.selfLeechFromDropEnabled = settings.global["inserter-fuel-leech-self-leech-from-drop-enabled"].value
     settingsCache.selfRefuelCheatEnabled = settings.global["inserter-fuel-leech-self-refuel-cheat-enabled"].value

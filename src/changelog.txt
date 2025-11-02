@@ -66,6 +66,9 @@ Date: 2025-01-19
     - Chat command /iflstats to print some statistics about the known inserters.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1
-Date: 2025-02-01
+Date: 2025-11-02
   Bugfixes:
     - Fixed ring buffer length calculation (was larger than needed).
+    - Fixed continous inserter (re)discovery performance degradation on surfaces with large numbers of generated chunks independent from inserter count.\n
+      Changed discovery from getting inserter lists per surface to getting them per chunk.\n
+      UPS cost for discovery is now almost independent of the size of the discovered area on each surface.
