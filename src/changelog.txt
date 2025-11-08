@@ -72,3 +72,9 @@ Date: 2025-11-02
     - Fixed continous inserter (re)discovery performance degradation on surfaces with large numbers of generated chunks independent from inserter count.\n
       Changed discovery from getting inserter lists per surface to getting them per chunk.\n
       UPS cost for discovery is now almost independent of the size of the discovered area on each surface.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.2
+Date: 2025-11-09
+  Features:
+    - Implemented maintaining a desired minimum drop target fuel item count mimicking non-leeching vanilla inserter behavior.
+      Inserters still always grab full hands when available and space in drop target inventory allows.

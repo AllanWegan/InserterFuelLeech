@@ -110,10 +110,10 @@ local function handleTargetFuelInventoryEmpty()
     local inserter = iucGetInserter()
     local dropBurner = iucGetDropBurner()
     local dropFuelInventory = iucGetDropFuelInventory()
-    if not dropBurner or not dropFuelInventory or not dropFuelInventory.is_empty() then
-        return nil -- Not a burner inserter or fuel inventory isn't empty.
+    if not dropBurner or not dropFuelInventory or dropFuelInventory.get_item_count() >= settingsCache.targetItemCountMin then
+        return nil -- Not a burner inserter or fuel inventory contains more than the required count of items.
     end
-    _ = debugLogger and debugLogger("Drop target fuel inventory empty.", nil)
+    _ = debugLogger and debugLogger(table.concat({"Drop target fuel inventory contains less than ", settingsCache.targetItemCountMin, " items."}), nil)
 
     local pickupFuelInventory = iucGetPickupFuelInventory()
     if not pickupFuelInventory then
@@ -169,7 +169,7 @@ local function getTicksTillInserterFuelInventoryEmpty()
     local burnRate = inserterPrototype.get_max_energy_usage(inserter.quality)
     local currentFuel = inserterBurner.remaining_burning_fuel
     local fuelItems = inserterFuelInventory.get_contents()
-    return getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems)
+    return getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems, 0)
 end
 
 --- @return uint? ticks to wait until next update for this inserter.
@@ -193,7 +193,7 @@ local function getTicksTillDropFuelInventoryEmpty()
     local burnRate = dropPrototype.get_max_energy_usage(dropEntity.quality)
     local currentFuel = dropBurner.remaining_burning_fuel
     local fuelItems = dropFuelInventory.get_contents()
-    return getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems)
+    return getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems, settingsCache.targetItemCountMin)
 end
 
 --- @return uint ticks to wait until next update for this inserter.

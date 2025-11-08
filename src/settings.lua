@@ -26,6 +26,15 @@ data:extend({
         default_value = true,
     },
     {
+        name = "inserter-fuel-leech-target-item-count-min",
+        type = "int-setting",
+        order = "015",
+        setting_type = "runtime-global",
+        minimum_value = 1,
+        maximum_value = 100000,
+        default_value = 5,
+    },
+    {
         name = "inserter-fuel-leech-pickup-margin-ticks",
         type = "int-setting",
         order = "021",

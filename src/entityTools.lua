@@ -60,24 +60,31 @@ end
 --- @param burnRate float
 --- @param currentFuel float
 --- @param fuelItems ItemCountWithQuality[]
+--- @param n uint
 --- @return uint ticks till no fuel item left.
-function getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems)
-    local inventoryFuel = 0
-    local lowestItemFuel = nil
+function getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems, n)
+    local fuelToBurn = currentFuel
+
+    -- Add whole inventory to fuelToBurn:
     for itemIndex = 1, #fuelItems do
         local fuelItemStack = fuelItems[itemIndex]
         local itemFuel = prototypes.item[fuelItemStack.name].fuel_value
-        if itemFuel > 0 then
-            inventoryFuel = inventoryFuel + fuelItemStack.count * itemFuel
-            if not lowestItemFuel or lowestItemFuel > itemFuel then
-                lowestItemFuel = itemFuel
-            end
+        fuelToBurn = fuelToBurn + fuelItemStack.count * itemFuel
+    end
+
+    -- Subtract last n items from fuelToBurn:
+    for itemIndex = #fuelItems, 1, -1 do
+        if n <= 0 then
+            break
         end
+        local fuelItemStack = fuelItems[itemIndex]
+        local itemFuel = prototypes.item[fuelItemStack.name].fuel_value
+        local itemCount = math.min(n, fuelItemStack.count)
+        fuelToBurn = fuelToBurn - itemCount * itemFuel
+        n = n - itemCount
     end
-    if not lowestItemFuel then
-        return 0
-    end
-    return math.max(0, math.ceil((currentFuel + inventoryFuel - lowestItemFuel) / burnRate))
+
+    return math.max(0, math.ceil(fuelToBurn / burnRate))
 end
 
 --- @param stack LuaItemStack
