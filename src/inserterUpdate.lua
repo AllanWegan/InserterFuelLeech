@@ -59,7 +59,7 @@ local function handleOwnFuelInventoryEmpty()
         if pickupTarget.burner and pickupTarget.burner.fuel_categories then
             -- Leeching from pickup burner inventory is done by the engine enabled by allow_burner_leech on prototypes.
             _ = debugLogger and debugLogger("Nothing to do because pickup has burner and fuel leeching from pickup for self is handled by engine.", nil)
-            return settingsCache.nothingLeechableFoundTicksToWait
+            return settingsCache.vanillaSelfRefuelTicksToWait
         end
     end
 

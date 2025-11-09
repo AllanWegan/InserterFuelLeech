@@ -21,6 +21,7 @@ GNU GPL-3.0. See the file COPYING for a copy of the GNU GPLv3.0.
 ---
 --- @field noUseForFuelTicksToWait uint
 --- @field unpoweredNonBurnerTicksToWait uint
+--- @field vanillaSelfRefuelTicksToWait uint
 --- @field unpoweredBurnerTicksToWait uint
 --- @field stuckWithItemTicksToWait uint
 --- @field nothingLeechableFoundTicksToWait uint
@@ -47,6 +48,7 @@ settingsCache = {
 
     noUseForFuelTicksToWait = 10 * 60,
     unpoweredNonBurnerTicksToWait = 10 * 60,
+    vanillaSelfRefuelTicksToWait = 1 * 60,
     unpoweredBurnerTicksToWait = 10 * 60,
     stuckWithItemTicksToWait = 10 * 60,
     nothingLeechableFoundTicksToWait = 10 * 60,
@@ -90,12 +92,14 @@ function updateSettingsCache()
 
     local noUseForFuelTicksToWait = math.floor(60 * settings.global["inserter-fuel-leech-no-use-for-fuel-seconds-to-wait"].value)
     local missingPowerTicksToWait = math.floor(60 * settings.global["inserter-fuel-leech-missing-power-seconds-to-wait"].value)
+    local vanillaSelfRefuelTicksToWait = math.floor(60 * settings.global["inserter-fuel-leech-vanilla-self-refuel-seconds-to-wait"].value)
     local missingResourceTicksToWait = math.floor(60 * settings.global["inserter-fuel-leech-missing-resource-seconds-to-wait"].value)
     local ticksBetweenUpdatesVariation = math.floor(60 * settings.global["inserter-fuel-leech-wait-variation-seconds"].value)
     local minTicksToWaitforVariation = math.min(noUseForFuelTicksToWait, missingPowerTicksToWait, missingResourceTicksToWait)
     local maxTicksToWait = math.max(noUseForFuelTicksToWait, missingPowerTicksToWait, missingResourceTicksToWait) + ticksBetweenUpdatesVariation
     settingsCache.noUseForFuelTicksToWait = noUseForFuelTicksToWait
     settingsCache.unpoweredNonBurnerTicksToWait = missingPowerTicksToWait
+    settingsCache.vanillaSelfRefuelTicksToWait = vanillaSelfRefuelTicksToWait
     settingsCache.unpoweredBurnerTicksToWait = missingResourceTicksToWait
     settingsCache.stuckWithItemTicksToWait = missingResourceTicksToWait
     settingsCache.nothingLeechableFoundTicksToWait = missingResourceTicksToWait
