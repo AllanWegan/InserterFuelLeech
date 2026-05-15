@@ -158,7 +158,7 @@ local function getTicksTillInserterFuelInventoryEmpty()
     if not inserterBurner then
         return nil
     end
-    local inserterPrototype = prototypes.entity[inserter.type]
+    local inserterPrototype = prototypes.entity[inserter.name]
     if not inserterPrototype then
         return nil
     end
@@ -182,7 +182,7 @@ local function getTicksTillDropFuelInventoryEmpty()
     if not dropBurner then
         return nil
     end
-    local dropPrototype = prototypes.entity[dropEntity.type]
+    local dropPrototype = prototypes.entity[dropEntity.name]
     if not dropPrototype then
         return nil
     end

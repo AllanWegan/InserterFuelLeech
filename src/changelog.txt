@@ -81,3 +81,9 @@ Date: 2025-11-09
   Bugfixes:
     - Fixed newly placedburner inserters taking the unpowered amount of time before first trying to fuel their drop target from their pickup source.
       There now is a separate setting for the seconds to wait when waiting for the engine to refuel an inserter. The default is 2.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.3
+Date: 2026-05-15
+  Bugfixes:
+    - Fixed use of wrong prototype definition when calculating time till arm in position.
+    - Fixed use of wrong prototype definition when calculating how long remaining fuel lasts.

@@ -114,7 +114,7 @@ function calcTicksTillInserterHandIsAtPos(inserter, destinationPos)
     local handPosX, handPosY = granularizeAndRebaseMapPos(handPos, granularity, basePosX, basePosY)
     local destPosX, destPosY = granularizeAndRebaseMapPos(destinationPos, granularity, basePosX, basePosY)
 
-    local inserterPrototype = prototypes.entity[inserter.type]
+    local inserterPrototype = prototypes.entity[inserter.name]
     local extensionSpeed = inserterPrototype.get_inserter_extension_speed(inserter.quality)
     local rotationSpeed = inserterPrototype.get_inserter_rotation_speed(inserter.quality)
 
