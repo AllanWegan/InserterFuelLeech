@@ -8,7 +8,7 @@ Inserter (re-)discovery to eventually rediscover inserters which didn't need
 management before but do now or have been discarded or missed by the event handlers.
 ]]
 
-local InserterDiscoveryStateVersion = 327
+local InserterDiscoveryStateVersion = 328
 
 --- @class InserterDiscoveryState
 --- @field version uint
@@ -24,10 +24,11 @@ local InserterDiscoveryStateVersion = 327
 --- @field cycleInsertersCount uint
 --- @field cycleNewInsertersCount uint
 
+--- @param version uint32
 --- @return InserterDiscoveryState
-local function makeInserterDiscoveryState()
+local function makeInserterDiscoveryState(version)
     return {
-        version = InserterDiscoveryStateVersion,
+        version = version,
         cycleStartTick = nil,
         surfaces = {},
         surfaceIndex = 0,
@@ -43,14 +44,14 @@ local function makeInserterDiscoveryState()
 end
 
 --- @type InserterDiscoveryState
-local state = makeInserterDiscoveryState()
+local state = makeInserterDiscoveryState(0)
 
 --- @param tick uint
 --- @param logger Logger?
 --- @return nil
 function initInserterDiscovery(tick, logger)
     logger = logger or getLogger(settingsCache.logLowTrafficPlayers, false)
-    state = makeInserterDiscoveryState()
+    state = makeInserterDiscoveryState(InserterDiscoveryStateVersion)
     storage.inserterDiscoveryState = state
     logger("Initialized inserter discovery state.", nil)
 end

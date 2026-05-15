@@ -87,3 +87,4 @@ Date: 2026-05-15
   Bugfixes:
     - Fixed use of wrong prototype definition when calculating time till arm in position.
     - Fixed use of wrong prototype definition when calculating how long remaining fuel lasts.
+    - Fixed desync when a player joins an uninterruptedly running game using mods creating inserters without raising build events. The desync would have happened on first actual fuel leeching of the asynchronously discovered inserter.
