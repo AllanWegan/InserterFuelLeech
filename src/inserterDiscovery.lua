@@ -66,7 +66,9 @@ end
 
 --- @return nil
 function inserterDiscoveryOnLoad()
-    state = storage.inserterDiscoveryState
+    if storage.inserterDiscoveryState then
+        state = storage.inserterDiscoveryState
+    end
 end
 
 --- @param tick uint

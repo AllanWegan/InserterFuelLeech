@@ -67,7 +67,9 @@ end
 
 --- @return nil
 function inserterRepoOnLoad()
-    state = storage.inserterRepoState -- Migrations are done on first use.
+    if storage.inserterRepoState then
+        state = storage.inserterRepoState -- Migrations are done on first use.
+    end
 end
 
 --- @class InserterRepoStats
