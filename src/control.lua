@@ -93,8 +93,3 @@ script.on_event(defines.events.on_player_rotated_entity, function(event)
     initSettingsCacheIfNeeded()
     registerInserter(event.tick, event.entity, nil)
 end)
-
-script.on_event(defines.events.on_object_destroyed, function(event)
-    initSettingsCacheIfNeeded()
-    forgetInserter(event.registration_number, "it has been destroyed")
-end)

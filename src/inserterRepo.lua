@@ -6,11 +6,11 @@ GNU GPL-3.0. See the file COPYING for a copy of the GNU GPLv3.0.
 local min = math.min
 local max = math.max
 
-local InserterRepoStateVersion = 250101
+local InserterRepoStateVersion = 250102
 
 --- @class InserterRepoTickState
 --- @field lastInserterIndex uint
---- @field inserters uint64[] list of inserter register_on_entity_destroyed IDs
+--- @field inserters uint64[] list of inserter unit numbers
 
 --- @class InserterRepoState
 --- @field version uint32
@@ -162,7 +162,7 @@ end
 --- @param inserterId uint64
 --- @param reason string
 --- @return nil
-function forgetInserter(inserterId, reason)
+local function forgetInserter(inserterId, reason)
     if not state.registeredInserters[inserterId] then
         return
     end
@@ -207,9 +207,7 @@ function updateInserters(tick)
         local inserterId = slotInserters[inserterIndex]
         local inserter = state.registeredInserters[inserterId]
 
-        if not inserter then
-            -- Already logged in forgetInserter.
-        elseif not inserter.valid then
+        if not inserter or not inserter.valid then
             forgetInserter(inserterId, "it became invalid")
         elseif not enabledInserterTypes[inserter.name] then
             forgetInserter(inserterId, "mod functionality has been disabled for its type.")
@@ -230,7 +228,7 @@ function registerInserter(tick, inserter, builderPlayerIndex)
     if not inserter or not inserter.valid or inserter.type ~= "inserter" or not settingsCache.inserterTypes[inserter.name] then
         return false
     end
-    local inserterId = script.register_on_object_destroyed(inserter)
+    local inserterId = inserter.unit_number
     if not inserterId or state.registeredInserters[inserterId] then
         return false
     end
