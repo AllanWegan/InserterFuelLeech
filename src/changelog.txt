@@ -94,3 +94,8 @@ Date: 2026-05-23
   Bugfixes:
     - Fixed crash when loading a pre-v1.0.0 save with the mod enabled.
     - Use inserter's unit number instead of registering it for on_object_destroyed events. Remove the on_object_destroyed handler to remove the only event entry point not guarded by automatic state initialization. This may or may not fix an irreproducible edge case involving the map editor.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.5
+Date: 2026-07-01
+  Info:
+    - Version bump for Factorio 2.1 and updated list of inventories to look for fuel in.

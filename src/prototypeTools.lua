@@ -7,8 +7,11 @@ GNU GPL-3.0. See the file COPYING for a copy of the GNU GPLv3.0.
 fuelSourceInventoryIndexes = {
     defines.inventory.fuel,
     defines.inventory.assembling_machine_dump,
-    defines.inventory.assembling_machine_input,
-    defines.inventory.assembling_machine_output,
+    defines.inventory.assembling_machine_input, -- Removed in 2.1.7
+    defines.inventory.assembling_machine_output, -- Removed in 2.1.7
+    defines.inventory.crafter_input, -- Added in 2.1.7
+    defines.inventory.crafter_output, -- Added in 2.1.7
+    defines.inventory.crafter_trash, -- Added in 2.1.7
     defines.inventory.burnt_result,
     defines.inventory.car_trunk,
     defines.inventory.cargo_landing_pad_main,
@@ -33,7 +36,10 @@ fuelSourceInventoryIndexes = {
 local function deduplicateFuelSourceInventoryIndexes()
     local indexesSet = {}
     for indexIndex = 1, #fuelSourceInventoryIndexes do
-        indexesSet[fuelSourceInventoryIndexes[indexIndex]] = true
+        local fuelSourceInventoryIndex = fuelSourceInventoryIndexes[indexIndex]
+        if fuelSourceInventoryIndex then
+            indexesSet[fuelSourceInventoryIndex] = true
+        end
     end
     fuelSourceInventoryIndexes = {}
     for index, _ in pairs(indexesSet) do
