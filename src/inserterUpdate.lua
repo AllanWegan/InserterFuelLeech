@@ -169,7 +169,7 @@ local function getTicksTillInserterFuelInventoryEmpty()
     local burnRate = inserterPrototype.get_max_energy_usage(inserter.quality)
     local currentFuel = inserterBurner.remaining_burning_fuel
     local fuelItems = inserterFuelInventory.get_contents()
-    return getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems, 0)
+    return getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems)
 end
 
 --- @return uint? ticks to wait until next update for this inserter.
@@ -193,7 +193,7 @@ local function getTicksTillDropFuelInventoryEmpty()
     local burnRate = dropPrototype.get_max_energy_usage(dropEntity.quality)
     local currentFuel = dropBurner.remaining_burning_fuel
     local fuelItems = dropFuelInventory.get_contents()
-    return getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems, settingsCache.targetItemCountMin)
+    return getTicksTillNoFuelItemLeft(burnRate, currentFuel, fuelItems)
 end
 
 --- @return uint ticks to wait until next update for this inserter.
