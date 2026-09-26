@@ -17,6 +17,7 @@ GNU GPL-3.0. See the file COPYING for a copy of the GNU GPLv3.0.
 --- @field selfRefuelCheatEnabled boolean
 --- @field vectorGranularity double
 --- @field targetItemCountMin uint
+--- @field sourceItemCountToLeave uint
 --- @field pickupPosMarginTicks uint
 ---
 --- @field noUseForFuelTicksToWait uint
@@ -44,6 +45,7 @@ settingsCache = {
     selfRefuelCheatEnabled = false,
     vectorGranularity = 0.01,
     targetItemCountMin = 1,
+    sourceItemCountToLeave = 1,
     pickupPosMarginTicks = 1,
 
     noUseForFuelTicksToWait = 10 * 60,
@@ -88,6 +90,8 @@ function updateSettingsCache()
     settingsCache.selfLeechFromDropEnabled = settings.global["inserter-fuel-leech-self-leech-from-drop-enabled"].value
     settingsCache.selfRefuelCheatEnabled = settings.global["inserter-fuel-leech-self-refuel-cheat-enabled"].value
     settingsCache.targetItemCountMin = settings.global["inserter-fuel-leech-target-item-count-min"].value
+    settingsCache.sourceItemCountToLeave = settings.global["inserter-fuel-leech-source-item-count-to-leave"].value
+    settingsCache.sourceItemCountToLeave = math.min(settingsCache.sourceItemCountToLeave, settingsCache.targetItemCountMin - 1)
     settingsCache.pickupPosMarginTicks = settings.global["inserter-fuel-leech-pickup-margin-ticks"].value
 
     local noUseForFuelTicksToWait = math.floor(60 * settings.global["inserter-fuel-leech-no-use-for-fuel-seconds-to-wait"].value)

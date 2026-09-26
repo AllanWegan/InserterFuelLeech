@@ -15,7 +15,7 @@ local function inserterLeechFuelFromGround(fuelInventory, fuelCategories, itemsO
         local stack = itemsOnTile[i].stack
         local moveCount = getInserterMovableCountOfItemStack(stack, inserter, fuelInventory, fuelCategories)
         if moveCount > 0 then
-            local movedCount, movedName = moveItemsFromStackIntoInserterHand(stack, inserter)
+            local movedCount, movedName = moveItemsFromStackIntoInserterHand(stack, inserter, nil)
             if movedCount > 0 then
                 _ = debugLogger and debugLogger("Got " .. movedCount .. " " .. movedName .. " from ground.", nil)
                 return true
@@ -38,7 +38,7 @@ local function inserterLeechFuelFromBelt(fuelInventory, fuelCategories, srcBelt)
             local stack = srcLine[itemIndex]
             local moveCount = getInserterMovableCountOfItemStack(stack, inserter, fuelInventory, fuelCategories)
             if moveCount > 0 then
-                local movedCount, movedName = moveItemsFromStackIntoInserterHand(stack, inserter)
+                local movedCount, movedName = moveItemsFromStackIntoInserterHand(stack, inserter, nil)
                 if movedCount > 0 then
                     _ = debugLogger and debugLogger("Got " .. movedCount .. " " .. movedName .. " from transport line #" .. lineIndex .. ".", nil)
                     return true
@@ -66,7 +66,7 @@ local function inserterLeechFuelFromEntityInventories(fuelInventory, fuelCategor
                 local stack = srcInventory[itemIndex]
                 local moveCount = getInserterMovableCountOfItemStack(stack, inserter, fuelInventory, fuelCategories)
                 if moveCount > 0 then
-                    local movedCount, movedName = moveItemsFromStackIntoInserterHand(stack, inserter)
+                    local movedCount, movedName = moveItemsFromStackIntoInserterHand(stack, inserter, nil)
                     if movedCount > 0 then
                         _ = debugLogger and debugLogger("Got " .. movedCount .. " " .. movedName .. " from inventory #" .. inventoryIndex .. ".", nil)
                         return true
@@ -129,11 +129,15 @@ end
 function inserterLeechFuelForDropTargetFromPickupTarget(fuelInventory, fuelCategories, srcInventory)
     local debugLogger = iucGetDebugLogger()
     local inserter = iucGetInserter()
+    local desiredMoveCount = srcInventory.get_item_count() - settingsCache.sourceItemCountToLeave
+    if desiredMoveCount < 1 then
+        return false
+    end
     for itemIndex = 1, #srcInventory do
         local stack = srcInventory[itemIndex]
         local moveCount = getInserterMovableCountOfItemStack(stack, inserter, fuelInventory, fuelCategories)
         if moveCount > 0 then
-            local movedCount, movedName = moveItemsFromStackIntoInserterHand(stack, inserter)
+            local movedCount, movedName = moveItemsFromStackIntoInserterHand(stack, inserter, desiredMoveCount)
             if movedCount > 0 then
                 _ = debugLogger and debugLogger("Got " .. movedCount .. " " .. movedName .. " from pickup fuel inventory.", nil)
                 return true

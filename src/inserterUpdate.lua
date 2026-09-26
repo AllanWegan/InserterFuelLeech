@@ -136,19 +136,20 @@ local function handleTargetFuelInventoryEmpty()
     -- Hand is empty.
 
     local ticksTillAtPickup = calcTicksTillInserterHandIsAtPos(inserter, inserter.pickup_position)
-    if ticksTillAtPickup < settingsCache.pickupPosMarginTicks then
-        if inserterLeechFuelForDropTargetFromPickupTarget(dropFuelInventory, dropBurner.fuel_categories, pickupFuelInventory) then
-            -- Leeched fuel for drop target from pickup. Reevaluate when fuel is in drop target's burner inventory.
-            local ticksTillAtDrop = calcTicksTillInserterHandIsAtPos(inserter, inserter.drop_position)
-            return ticksTillAtDrop + 1
-        end
+    if ticksTillAtPickup > settingsCache.pickupPosMarginTicks then
+        -- Wait till at pickup.
+        _ = debugLogger and debugLogger("Waiting till hand at pickup.", nil)
+        return ticksTillAtPickup - settingsCache.pickupPosMarginTicks + 1
+    end
+    -- Hand is at pickup.
+
+    if not inserterLeechFuelForDropTargetFromPickupTarget(dropFuelInventory, dropBurner.fuel_categories, pickupFuelInventory) then
         _ = debugLogger and debugLogger("Nothng leechable found.", nil)
         return settingsCache.nothingLeechableFoundTicksToWait
     end
-
-    -- Wait till at pickup.
-    _ = debugLogger and debugLogger("Waiting till hand at pickup.", nil)
-    return ticksTillAtPickup - settingsCache.pickupPosMarginTicks + 1
+    -- Leeched fuel for drop target from pickup. Reevaluate when fuel is in drop target's burner inventory.
+    local ticksTillAtDrop = calcTicksTillInserterHandIsAtPos(inserter, inserter.drop_position)
+    return ticksTillAtDrop + 1
 end
 
 --- @return uint? ticks to wait until next update for this inserter.

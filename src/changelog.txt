@@ -102,7 +102,10 @@ Date: 2026-07-01
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.6
 Date: 2026-09-26
+  Features:
+    - Setting for leaving at least N items behind when leaching from fuel inventory. Default is 1. Set to 0 if you use fuel items with a stack size of 1.
   Bugfixes:
     - Fix chain refueling starvation workaround leading to rescheduling inserter to next tick when drop target has no fuel burning while being well-fueled.
   Info:
     - Adapt to Factorio 2.1.20 changing ItemPrototype::fuel_category to ItemPrototype::fuel_categories
+    - Reduce default waiting time when everything is well-fueled or a resource is missing to increase reaction times in longer refueling chains.

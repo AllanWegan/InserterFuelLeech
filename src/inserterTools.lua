@@ -67,15 +67,16 @@ end
 
 --- @param stack LuaItemStack The stack might become invalid due to moving it.
 --- @param inserter LuaEntity
+--- @param amount uint32?
 --- @return uint movedCount, string movedName
-function moveItemsFromStackIntoInserterHand(stack, inserter)
+function moveItemsFromStackIntoInserterHand(stack, inserter, amount)
     local handStack = inserter.held_stack
     if not handStack.valid or not stack.valid_for_read or stack.count < 1 then
         return 0, ""
     end
     local movedName = stack.name
     local oldHandCount = handStack.count
-    handStack.transfer_stack(stack)
+    handStack.transfer_stack(stack, amount)
     local movedCount = handStack.count - oldHandCount
     return movedCount, movedName
 end

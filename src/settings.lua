@@ -35,6 +35,15 @@ data:extend({
         default_value = 5,
     },
     {
+        name = "inserter-fuel-leech-source-item-count-to-leave",
+        type = "int-setting",
+        order = "016",
+        setting_type = "runtime-global",
+        minimum_value = 0,
+        maximum_value = 100000,
+        default_value = 1,
+    },
+    {
         name = "inserter-fuel-leech-pickup-margin-ticks",
         type = "int-setting",
         order = "021",
@@ -50,7 +59,7 @@ data:extend({
         setting_type = "runtime-global",
         minimum_value = 1,
         maximum_value = 600,
-        default_value = 30,
+        default_value = 5,
     },
     {
         name = "inserter-fuel-leech-missing-resource-seconds-to-wait",
@@ -59,7 +68,7 @@ data:extend({
         setting_type = "runtime-global",
         minimum_value = 1,
         maximum_value = 600,
-        default_value = 10,
+        default_value = 5,
     },
     {
         name = "inserter-fuel-leech-missing-power-seconds-to-wait",
