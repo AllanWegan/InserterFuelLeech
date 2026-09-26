@@ -1,4 +1,4 @@
 ---@meta _
 
 ---@type table
-storage = {}
+global = {}
