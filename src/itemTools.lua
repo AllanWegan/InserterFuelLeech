@@ -26,3 +26,26 @@ function getItemsOnGround(surface, mapPosition, radius)
     itemsOnGroundFilter.radius = radius
     return surface.find_entities_filtered(itemsOnGroundFilter)
 end
+
+--- @param itemName string
+--- @param matchingFuelCategories table<string,true>?
+--- @return boolean
+function isMatchingFuelItem(itemName, matchingFuelCategories)
+    if not matchingFuelCategories then
+        return false
+    end
+    local itemPrototype = prototypes.item[itemName]
+    if not itemPrototype then
+        return false
+    end
+    local itemFuelCategories = prototypes.item[itemName].fuel_categories
+    if not itemFuelCategories then
+        return false
+    end
+    for _, fuelCategory in ipairs(itemFuelCategories) do
+        if matchingFuelCategories[fuelCategory] then
+            return true
+        end
+    end
+    return false
+end

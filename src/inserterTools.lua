@@ -36,7 +36,7 @@ function getInserterMovableCountOfItemStack(stack, inserter, dstInventory, allow
     if not stack.valid_for_read or stack.count == 0 then
         return 0
     end
-    if allowedFuelCategories and not allowedFuelCategories[prototypes.item[stack.name].fuel_category] then
+    if allowedFuelCategories and not isMatchingFuelItem(stack.name, allowedFuelCategories) then
         return 0
     end
     if not isItemAllowedByInserterFilter(inserter, stack.name, stack.quality.level) then

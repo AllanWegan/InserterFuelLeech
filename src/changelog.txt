@@ -99,3 +99,8 @@ Version: 1.0.5
 Date: 2026-07-01
   Info:
     - Version bump for Factorio 2.1 and updated list of inventories to look for fuel in.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.6
+Date: 2026-09-26
+  Info:
+    - Adapt to Factorio 2.1.20 changing ItemPrototype::fuel_category to ItemPrototype::fuel_categories
